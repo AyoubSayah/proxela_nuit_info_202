@@ -15,17 +15,15 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      - name: Deploy using ssh
-        uses: appleboy/ssh-action@master
-        with:
-          host: 151.80.123.208
-          username: root
-          password: Rakbhim192527@
-          port: 22
-          script: |
-            cd ../home/NuitD-info
-            git pull origin develop
-            git status
-            docker build . -t dockerized-react
-            docker stop $(docker ps -q --filter ancestor=dockerized-react )           
-            docker run -p 80:80 -d dockerized-react
+    - name: Deploy using ssh
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.HOST }}
+        username: ${{ secrets.USERNAME }}
+        key: ${{ secrets.PRIVATE_KEY }}
+        port: 22
+        script: |
+          cd ~/home/test
+          git pull origin develop
+          git status
+        
