@@ -16,7 +16,16 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
     - name: Deploy using ssh
-      run: echo ${{ secrets.HOST }}
-
+      uses: appleboy/ssh-action@master
+      with:
+        host: ${{ secrets.HOST }}
+        username: ${{ secrets.USERNAME }}
+        key: ${{ secrets.PRIVATE_KEY }}
+        port: 22
+        script: |
+          cd ~/home/test
+          git pull origin develop
+          git status
+        
 
      
