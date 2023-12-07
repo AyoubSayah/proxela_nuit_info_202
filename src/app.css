@@ -1,0 +1,45 @@
+.swiper-wrapper {
+  padding: 1rem 2.2rem;
+}
+
+@media screen and (max-width: 508px) {
+  .swiper-wrapper {
+    padding: 1rem 0rem;
+  }
+}
+
+@keyframes a1 {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+.left {
+  animation: a1 0.5s linear infinite;
+  transform-origin: 210px 100px;
+}
+@keyframes a2 {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(-360deg);
+  }
+}
+.right {
+  animation: a2 0.6s linear infinite;
+  transform-origin: 400px 100px;
+}
+@keyframes a3 {
+  from {
+    transform: translateY(0px);
+  }
+  to {
+    transform: translateY(-60px);
+  }
+}
+.a3 {
+  animation: a3 1s linear infinite alternate;
+}

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vite + React + TS</title>
+  </head>
+  <style>
+    .container {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      display: flex;
+      transform: translate(-50%, -50%);
+    }
+    .container-animation {
+      display: inline-block;
+      background-color: #fc555c;
+      width: 1.3rem;
+      height: 1.3rem;
+      border-radius: 100%;
+      animation-fill-mode: both;
+    }
+    .container-animation1 {
+      animation: beat 1s infinite linear;
+    }
+    .container-animation2 {
+      animation: beat 0.5s infinite linear;
+    }
+    .container-animation3 {
+      animation: beat 0.3s infinite linear;
+    }
+    @keyframes beat {
+      50% {
+        transform: scale(0.75);
+        opacity: 0.2;
+      }
+      100% {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+  </style>
+  <body>
+    <div id="root">
+      <span class="container">
+        <span class="container-animation container-animation1"></span>
+        <span class="container-animation container-animation2"></span>
+        <span class="container-animation container-animation3"></span>
+      </span>
+    </div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
