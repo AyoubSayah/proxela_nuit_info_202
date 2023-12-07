@@ -20,7 +20,7 @@ jobs:
       with:
         host: ${{ secrets.HOST }}
         username: ${{ secrets.USERNAME }}
-        key: ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAY6WaJTxlL8h52a2OblQ5kqFOOu9nVwjmQ7BPKfI+J3 sayahayoub9827@gmail.com
+        key: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDAngsvYs5A/Sglpw5skUyID3fly2llxRm2wxy37OzdMuiND1twtKQJU69xlIzl9m8tDAjG9e6rNqMFCxCMRvBLI+bhhctRPm8cswqr7rIfvoobYVIHRxgAqib+3GqtenpeMYLu+D6iyHF2gbDTRnzkl00f3pUlSqz4qiDMNnE64F/Obwh2zbfCvPUQM8Q9b/oqPqBS+fdDrMHOvYpbJf9DFTaYvaFEtbt0l//p4Jkqm8N1ezrmfn6+7ETHKWtgJlUXIORTvj8JvtS5ZYAE3I2o37kF+LMVUeCKHchwgSNCsj6TuEjUpSaDwAaKuDsShsEf1PfyjPXgWrpGlOzyJZyZzAqI89exHxOCFZY1OZT7ePU3IJ5Ua/vDr2+nVe5NoJqZOq8O/c+OHTY1CocQLxRpDRf409Z9Z4S3zGFEmHSDt637LhdR+4X2WEj4Tr0LhHg2ojgLFS7kM2QHBq/k1rjcI75vbpegT5QtjJHmDW4WbaMOEXu7r1kexYnDmveL0vs= root@vps23948-bhy.zenhosting.info
         port: 22
         script: |
           cd ~/home/test
