@@ -20,7 +20,7 @@ jobs:
       with:
         host: ${{ secrets.HOST }}
         username: ${{ secrets.USERNAME }}
-        key: ${{ secrets.PRIVATE_KEY }}
+        key: ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAY6WaJTxlL8h52a2OblQ5kqFOOu9nVwjmQ7BPKfI+J3 sayahayoub9827@gmail.com
         port: 22
         script: |
           cd ~/home/test
