@@ -72,8 +72,8 @@ const Home = () => {
             textAlign="left"
             maxW="30rem"
           >
-            Sida Info Service a été créée en 1990 au plus fort de l’épidémie de
-            SIDA
+             Info Service a été créée en 1990 au plus fort de l’épidémie de
+            
           </Text>
           <Text maxW="30rem">
             Depuis sa fondation, SIS Association s’est inscrite dans la
