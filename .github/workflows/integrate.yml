@@ -27,7 +27,8 @@ jobs:
           git pull origin develop
           yarn
           yarn build
-          cp -r ./dist /var/www/html/
+          cd dist
+          cp -r . /var/www/html
           systemctl restart nginx
 
 
