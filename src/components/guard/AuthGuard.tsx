@@ -11,12 +11,12 @@ const AuthGuard = () => {
   })
 
   useEffect(() => {
-    if (pathname.includes('private') && GetToken()) {
+    if (pathname.includes('private') && !token) {
       navigate('/')
-    } else if (GetToken()) {
+    } else if (token) {
       navigate('/private/home')
     }
-  }, [pathname])
+  }, [pathname, token])
   return <></>
 }
 
