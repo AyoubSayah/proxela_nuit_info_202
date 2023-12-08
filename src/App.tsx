@@ -15,7 +15,7 @@ function App() {
   return (
       <>
           <KonamiCodeListener />
-            <div className="App">
+            <div className="App" id="app">
               <Suspense fallback={<Loader />}>{routes}</Suspense>
               <InfoModal />
               <SuccessModal />

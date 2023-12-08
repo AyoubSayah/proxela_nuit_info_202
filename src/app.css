@@ -43,3 +43,42 @@
 .a3 {
   animation: a3 1s linear infinite alternate;
 }
+
+.animation-text p{
+animation: textAnimation 1s ease-in-out  ;
+ text-align: center;
+background: -webkit-linear-gradient(#eee, #333);
+-webkit-background-clip: text;
+-webkit-text-fill-color: transparent;
+
+}
+@keyframes textAnimation {
+  0%{
+    opacity: 0;
+    transform: translateY(20px) scale(0);
+  }
+  100%{
+    opacity: 1;
+    transform: translateY(0px) scale(1);
+  }
+}
+.animation-body{
+  animation: bodyAnimation .6s ease-in-out  infinite alternate ;
+
+}
+@keyframes bodyAnimation {
+  0%{
+    transform: translateX(80px) ;
+  }
+  
+  35%{
+    transform: translateX(-80px) ;
+  }
+  70%{
+    transform: translatey(80px) ;
+  }
+  100%{
+    transform: translatey(-80px) ;
+  }
+  
+}

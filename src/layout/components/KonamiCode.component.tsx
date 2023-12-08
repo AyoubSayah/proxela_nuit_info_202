@@ -41,7 +41,7 @@ export default function KonamiCodeComponent() {
     }
 
     return (
-        <div style={{position:'fixed', zIndex:999999,width:'100%',height:'100%'}}>
+        <div style={{position:'fixed', zIndex:999,width:'100%',height:'100%'}}>
 
 
             <DndContext
@@ -68,7 +68,6 @@ export default function KonamiCodeComponent() {
                     dropAnimation={{
                         ...defaultDropAnimation,
                         duration: ANIMATION_DURATION_MS / 2,
-                        dragSourceOpacity: 0
                     }}
                 >
                     {activeId ? <DragOverlayItem id={activeId} /> : null}
