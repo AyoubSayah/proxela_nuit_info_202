@@ -163,7 +163,7 @@ const Signup = () => {
                     </Box>
                   </VStack>
 
-                  <VStack alignItems="start">
+                  <VStack alignItems="start" mt="2rem">
                     <FormLabel htmlFor="firstName">Prénom</FormLabel>
                     <Field
                       as={Input}

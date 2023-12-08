@@ -52,12 +52,10 @@ const DevTeam = () => {
         textTransform="capitalize"
         mt="1rem"
       >
-        Convaincue par Pierre KNEIP (1944-1995), alors responsable bénévole de
-        la permanence téléphonique de AIDES Ile-de-France, l’AFLS a voulu, à
-        l’instar de ce qui se faisait déjà dans plusieurs pays d’Europe,{' '}
+Le Réseau Action Climat – France a été créé en 1996, à l'initiative de France Nature Environnement (FNE) et de WWF, Greenpeace et les Amis de la Terre, membres du Réseau Action Climat International (Climate Action Network International – CAN-International), pour en faire le réseau français d'associations spécialiste ...
       </Text>
       <Flex justifyContent="center" flexWrap="wrap" mt="3rem">
-        <AvatarProgress avatarUrl={fontdateur} size="12rem" />
+        <AvatarProgress avatarUrl={""} size="12rem" />
       </Flex>
     </ChakraDiv>
   )
