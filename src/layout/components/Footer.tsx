@@ -25,11 +25,10 @@ const Footer = () => {
       >
         Proudly made with Care by our team
       </Text>
-      <Box w="10rem" h="10rem" bg="white" rounded="full">
-        <LogoSIS h="100%" w="100%" />
-      </Box>
+        <LogoSIS h="8rem" w="8rem" objectFit="cover" />
+      
       <Text fontSize="2xl" fontWeight="extrabold" color="white">
-        Sida Info Service
+     CLIMAT WARNING
       </Text>
     </Box>
   )

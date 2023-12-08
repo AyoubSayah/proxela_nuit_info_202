@@ -3,12 +3,7 @@ import React, { useEffect } from 'react'
 import { useLazyGetImageQuery } from '../slices/landingAsyncSlice'
 
 const FaqItem = ({ data, isVisible }: any) => {
-  const [trigger, { isFetching, data: image }] = useLazyGetImageQuery()
-  useEffect(() => {
-    if (data?.image && isVisible && !image) {
-      trigger({ url: data.image })
-    }
-  }, [isVisible])
+
   return (
     <Card
       bg="white"
@@ -25,22 +20,16 @@ const FaqItem = ({ data, isVisible }: any) => {
         transform: 'scale(1.05)',
       }}
     >
-      <Skeleton
-        isLoaded={!isFetching && image != undefined}
-        w="100%"
-        display="flex"
-        justifyContent="center"
-      >
+     
         <Img
           alt={data.title}
           objectFit="cover"
           rounded="lg"
-          src={image}
+          src={data.image}
           w="full"
           minH="18rem"
           maxH="18rem"
         />
-      </Skeleton>
 
       <Text fontSize="lg" fontWeight="bold" mt="1rem" noOfLines={3}>
         {data?.title}

@@ -34,7 +34,7 @@ const Home = () => {
   //   shouldForwardProp: (prop) =>
   //     isValidMotionProp(prop) || shouldForwardProp(prop),
   // })
-    const ChakraImage = motion<Omit<ImageProps, 'transition'>>(Image)
+  const ChakraImage = motion<Omit<ImageProps, 'transition'>>(Image)
   return (
     <Box ref={containerRef}>
       <Canvas ElementRef={containerRef} />
@@ -61,9 +61,9 @@ const Home = () => {
             fontWeight="bold"
             color="primary.700"
             textAlign="left"
-            maxW="30rem"
+            maxW="35rem"
             letterSpacing={'.2rem'}
-            text="Sida  Info  Service"
+            text="Resau Action Climat"
           />
 
           <Text
@@ -72,13 +72,13 @@ const Home = () => {
             textAlign="left"
             maxW="30rem"
           >
-             Info Service a été créée en 1990 au plus fort de l’épidémie de
-            
+
+
           </Text>
           <Text maxW="30rem">
-            Depuis sa fondation, SIS Association s’est inscrite dans la
-            promotion de la santé sexuelle parce que convaincue que la vie
-            sexuelle de chaque personne est un espace intime
+            Le Réseau Action Climat, fédération de 37 associations nationales
+            et locales, lutte contre les causes du changement climatique, de
+            l’échelle internationale à l’échelle locale
           </Text>
           <Flex gap=".5rem" mt="1rem">
             <Link to="/auth/register">
@@ -111,15 +111,7 @@ const Home = () => {
           />
         </Box>
       </Flex>
-      <Img
-        height="5rem"
-        mt="-2rem"
-        position="absolute"
-        src={bottomNavbarImage}
-        width="100%"
-        zIndex="-6"
-      />
-      <Services />
+
       <Img
         height="5rem"
         mt="4rem"

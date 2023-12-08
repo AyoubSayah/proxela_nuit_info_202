@@ -56,7 +56,7 @@ const FaqQuestions = () => {
         textAlign="center"
         textTransform="capitalize"
       >
-        QUESTIONS FRÉQUENTES VIH/SIDA{' '}
+        QUESTIONS FRÉQUENTES {' '}
       </Text>
 
       <Box p="4rem">
