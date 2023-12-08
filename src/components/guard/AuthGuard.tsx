@@ -1,6 +1,7 @@
-import React, { useLayoutEffect } from 'react'
+import React, { useEffect, useLayoutEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router-dom'
+import { GetToken } from '../../modules/auth/slices/authSlice'
 
 const AuthGuard = () => {
   const { pathname } = useLocation()
@@ -9,13 +10,13 @@ const AuthGuard = () => {
     return state.authentification.token
   })
 
-  useLayoutEffect(() => {
-    if (pathname.includes('private') && !token) {
+  useEffect(() => {
+    if (pathname.includes('private') && GetToken()) {
       navigate('/')
-    } else if (token) {
+    } else if (GetToken()) {
       navigate('/private/home')
     }
-  }, [pathname, token])
+  }, [pathname])
   return <></>
 }
 
