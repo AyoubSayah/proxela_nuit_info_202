@@ -18,6 +18,9 @@ import {
 
 
 import styles from "./style";
+import  clouds from "../../assets/cloud.png"
+import summer from "../../assets/summer.png"
+import  thunder from "../../assets/thunder.wav"
 
 const ANIMATION_DURATION_MS = 750;
 const initialItems = [...Array(30).keys()].map(() => generateRandomHexCode());
@@ -98,7 +101,7 @@ function Item({ id }) {
                 style={{
                     ...styles.cardStyles,
 
-                   backgroundImage:'url(src/assets/summer.png)',
+                   backgroundImage:`url(${summer})`,
                     backgroundSize:'cover',
                     backgroundPosition:'center'
                 }}
@@ -118,7 +121,7 @@ function Item({ id }) {
 }
 
 function DragOverlayItem(props: { id: string }) {
-    const [audio] = useState(new Audio('src/assets/thunder.wav'));
+    const [audio] = useState(new Audio(thunder));
 
     audio.play();
 
@@ -143,7 +146,7 @@ function DragOverlayItem(props: { id: string }) {
         <div>
             <motion.div
                 style={{ ...styles.cardStyles,
-                    backgroundImage:'url(src/assets/cloud.png)',
+                    backgroundImage:`url(${clouds})`,
                     backgroundSize:'cover',
                     backgroundPosition:'center'
 

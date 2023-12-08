@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import {Countdown} from "./Fireworks";
 import KonamiCodeComponent from "./KonamiCode.component";
 import TextKonami from './TextKonami';
+import  thunder from "../../assets/thunder.wav"
+import police from "../../assets/police.mp3"
 
 const KonamiCodeListener = () => {
     let konamiCode=[]
@@ -9,8 +11,8 @@ const KonamiCodeListener = () => {
     const [showSun,setShowSun] = useState(false)
     const [audio] = useState(new Audio('src/assets/success.wav'));
     const konamiSequence = ['ArrowUp','ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight','b','a'];
-    const [audio2] = useState(new Audio('src/assets/thunder.wav'));
-    const [audio3] = useState(new Audio('src/assets/police.mp3'));
+    const [audio2] = useState(new Audio(thunder));
+    const [audio3] = useState(new Audio(police));
 
     useEffect(() => {
         const handleKeyDown = async (event) => {

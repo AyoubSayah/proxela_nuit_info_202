@@ -1,6 +1,7 @@
 import { chakra, BoxProps, IconProps, Icon, Img, ImgProps } from '@chakra-ui/react'
 import { motion } from 'framer-motion'
 import React, { FC } from 'react'
+import logo from '../../../public/logoFall.png'
 type LogoProps = {
   textColor?: string
   backgroundColor?: string
@@ -14,7 +15,7 @@ const LogoSIS: FC<LogoProps> = ({
 
   return (
   
-       <Img src="/public/logoFall.png"        {...props}/>
+       <Img src={logo}        {...props}/>
 
   )
 }
