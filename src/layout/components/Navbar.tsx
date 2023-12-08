@@ -84,7 +84,7 @@ const Navbar: FunctionComponent<NavbarProps> = ({
         <Flex alignItems="center">
           <LogoSIS h="5rem" w="5rem" />
         </Flex>
-        {token === null && (
+        {token === '' && (
           <Flex
             alignItems="center"
             bg="white"
@@ -159,7 +159,7 @@ const Navbar: FunctionComponent<NavbarProps> = ({
           </Select> */}
           </Flex>
         )}
-        {token !== null && (
+        {token && (
           <Flex gap=".5rem">
             <Menu>
               <MenuButton
@@ -185,12 +185,7 @@ const Navbar: FunctionComponent<NavbarProps> = ({
                 <MenuItem>
                   <Icon as={AiOutlineUser} mr=".5rem" /> Profile
                 </MenuItem>
-                <MenuItem
-                  onClick={() => {
-                    console.log('clicked')
-                    dispatch(authSlice.actions.signOut())
-                  }}
-                >
+                <MenuItem>
                   <Icon as={AiOutlineLogout} mr=".5rem" /> Sign Out
                 </MenuItem>
               </MenuList>
@@ -203,7 +198,12 @@ const Navbar: FunctionComponent<NavbarProps> = ({
                 <MenuItem>
                   <Icon as={AiOutlineUser} mr=".5rem" /> Profile
                 </MenuItem>
-                <MenuItem>
+                <MenuItem
+                  onClick={() => {
+                    console.log('clicked')
+                    dispatch(authSlice.actions.signOut())
+                  }}
+                >
                   <Icon as={AiOutlineLogout} mr=".5rem" /> Sign Out
                 </MenuItem>
               </MenuList>

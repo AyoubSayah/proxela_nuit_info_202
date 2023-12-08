@@ -7,13 +7,15 @@ import {
   Flex,
   Icon,
   Input,
+  Spinner,
   Text,
   Textarea,
   useOutsideClick,
+  useToast,
 } from '@chakra-ui/react'
 import EmojiPicker from 'emoji-picker-react'
 
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { AiFillFileImage, AiFillSmile } from 'react-icons/ai'
 import { useDispatch } from 'react-redux'
 
@@ -29,8 +31,9 @@ const NewPost = () => {
   const [showEmoji, setShowEmoji] = useState(false)
   const [text, setText] = useState('')
   const ref = React.useRef<any>()
-  const [upload] = useAddImageMutation()
-  const [addPost, result] = useAddNewPostMutation()
+  const [upload, { isLoading: isImageLoading }] = useAddImageMutation()
+  const toast = useToast()
+  const [addPost, { isLoading, isSuccess }] = useAddNewPostMutation()
   const refText = React.useRef<any>()
   const [image, setImage] = useState()
   const dispatch = useDispatch()
@@ -50,9 +53,8 @@ const NewPost = () => {
         .unwrap()
         .then((data) => {
           addPost({
-            image: imageUrl + data.fileName,
+            image: data.fileName,
             content: text,
-            userNAme: 'Ahmed hedi',
           })
             .unwrap()
             .then((data) => {
@@ -120,15 +122,17 @@ const NewPost = () => {
           w="full"
         >
           <Icon as={AiFillFileImage} color="red.500" h="1.5rem" w="1.5rem" />
-          <Text fontWeight="bold">Upload Pictures</Text>
+          <Text fontWeight="bold">Upload Pictures {image?.name}</Text>
           <Input
             display="none"
             id="upload-image"
             type="file"
+            accept="image/png, image/gif, image/jpeg"
             onChange={(e) => {
               setImage(e.target.files[0])
             }}
           />
+          {isImageLoading && <Spinner />}
         </Flex>
 
         <Flex

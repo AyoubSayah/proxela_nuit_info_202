@@ -42,7 +42,7 @@ export function checkRtl(character: string) {
     'ه',
     'ی',
   ]
-  return RTL.indexOf(character[0]) > -1
+  return RTL.indexOf(character?.[0]) > -1
 }
 
 export enum Question {
