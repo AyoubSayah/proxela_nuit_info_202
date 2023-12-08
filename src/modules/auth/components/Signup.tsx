@@ -4,6 +4,8 @@ import {
   Flex,
   FormControl,
   FormErrorMessage,
+  Spinner,
+  Select,
   FormLabel,
   HStack,
   Input,
@@ -13,21 +15,44 @@ import {
 import { Field, Form, Formik } from 'formik'
 import * as Yup from 'yup'
 import { useNavigate } from 'react-router-dom'
+import { Gender, Question } from '../../../utils/utils'
+import { useConfirmCodeMutation, useSignupMutation } from '../slices/authSlice'
+import CodeConfirmation from '../../common/components/CodeConfirmation'
+import { useEffect, useState } from 'react'
 
 const Signup = () => {
   const navigate = useNavigate()
-  const initialValues = {
-    username: '',
-    firstName: '',
-    lastName: '',
-    email: '',
-    password: '',
-    confirmPassword: '',
+  const [
+    signUpHandler,
+    { isLoading, isSuccess: isSignUpSuccess, data, reset: resetModal },
+  ] = useSignupMutation()
+
+  const [showModal, setShowModal] = useState(false)
+
+  console.log('isLoading', data)
+  const submitData = async (values) => {
+    const requestData = {
+      firstName: values.firstName,
+      lastName: values.lastName,
+      email: values.email,
+      password: values.password,
+      gender: values.gender,
+      securityQuestion: {
+        question: values.question,
+        response: values.response,
+      },
+    }
+    try {
+      await signUpHandler(requestData)
+    } catch (e) {
+      console.error(e)
+    }
   }
 
   const SignInSchema = Yup.object().shape({
-    email: Yup.string().required('Saisir votre adresse email'),
-    username: Yup.string().required("Nom d'utilisateur est requis"),
+    email: Yup.string()
+      .email('Address email invalide')
+      .required('Saisir votre adresse email'),
     firstName: Yup.string()
       .min(2, 'Trop court!')
       .max(50, 'Trop long!')
@@ -36,9 +61,9 @@ const Signup = () => {
       .min(2, 'Trop court!')
       .max(50, 'Trop long!')
       .required('Saisir votre nom'),
-    password: Yup.string().min(
-      8,
-      'Utilisez 8 caractères ou plus pour votre mot de passe'
+    password: Yup.string().matches(
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+      'Weak password'
     ),
     confirmPassword: Yup.string()
       .required('Confirmer votre mot de passe')
@@ -46,40 +71,12 @@ const Signup = () => {
         [Yup.ref('password'), null],
         'Mots de passe ne correspond pas. Veuillez réessayer'
       ),
+    question: Yup.string().required(
+      'vous devez choisir votre question de sécurité'
+    ),
+    gender: Yup.string().required('vous devez choisir votre gender'),
+    response: Yup.string().required('vous devez choisir votre réponse'),
   })
-
-  function validateEmail(value: string) {
-    let error
-    if (!value) {
-      error = 'Required'
-    } else if (
-      !/^[a-zA-Z]+[a-zA-Z0-9]+[_.{1}]?[a-zA-Z0-9]+@[a-zA-Z0-9]+[-.{1}]?[a-zA-Z0-9]+[.][a-zA-Z.]{2,}$/i.test(
-        value
-      )
-    ) {
-      error = 'Address email invalide'
-    }
-    return error
-  }
-  function validateFirstName(value: string) {
-    let error
-    if (!value) {
-      error = 'Required'
-    } else if (!/^[a-zA-Z]$/i.test(value)) {
-      error = ' Prénom invalide'
-    }
-    return error
-  }
-
-  function validateLastName(value: string) {
-    let error
-    if (!value) {
-      error = 'Required'
-    } else if (!/^[a-zA-Z]$/i.test(value)) {
-      error = ' Nom invalide'
-    }
-    return error
-  }
 
   function validatePassword(value: string) {
     let error
@@ -95,6 +92,12 @@ const Signup = () => {
     }
     return error
   }
+
+  useEffect(() => {
+    if (isSignUpSuccess) {
+      setShowModal(true)
+    }
+  }, [isSignUpSuccess])
 
   return (
     <Flex align="center" justify="center">
@@ -118,118 +121,188 @@ const Signup = () => {
         </Text>
         <Formik
           initialValues={{
-            username: '',
             firstName: '',
             lastName: '',
             email: '',
             password: '',
             confirmPassword: '',
+            question: '',
+            response: '',
+            gender: '',
           }}
           validationSchema={SignInSchema}
-          onSubmit={(values) => {
-            navigate('/auth/login')
+          onSubmit={async (values) => {
+            await submitData(values)
           }}
         >
-          {({ errors, touched }) => (
-            <Form>
-              <HStack>
-                <VStack alignItems="start">
-                  <FormLabel htmlFor="lastName">Nom</FormLabel>
-                  <Field as={Input} id="lastName" name="lastName" type="text" />
-                  <Box height="1rem">
-                    {errors.lastName && touched.lastName ? (
-                      <Box fontSize="12" color="red">
-                        {errors.lastName}
-                      </Box>
-                    ) : null}
+          {({
+            values,
+            errors,
+            touched,
+            setFieldValue,
+            submitForm,
+            resetForm,
+          }) => {
+            return (
+              <Form>
+                <HStack>
+                  <VStack alignItems="start">
+                    <FormLabel htmlFor="lastName">Nom</FormLabel>
+                    <Field
+                      as={Input}
+                      id="lastName"
+                      name="lastName"
+                      type="text"
+                    />
+                    <Box height="1rem">
+                      {errors.lastName && touched.lastName ? (
+                        <Box fontSize="12" color="red">
+                          {errors.lastName}
+                        </Box>
+                      ) : null}
+                    </Box>
+                  </VStack>
+
+                  <VStack alignItems="start">
+                    <FormLabel htmlFor="firstName">Prénom</FormLabel>
+                    <Field
+                      as={Input}
+                      id="firstName"
+                      name="firstName"
+                      type="text"
+                    />
+                    <Box mb="2rem" height="1rem">
+                      {errors.firstName && touched.firstName ? (
+                        <Box fontSize="12" color="red">
+                          {errors.firstName}
+                        </Box>
+                      ) : null}
+                    </Box>
+                  </VStack>
+                </HStack>
+
+                <FormLabel mt="1rem" htmlFor="email">
+                  Email Address
+                </FormLabel>
+                <Field as={Input} id="email" name="email" type="email" />
+                {errors.email && touched.email ? (
+                  <Box fontSize="12" color="red">
+                    {errors.email}
                   </Box>
-                </VStack>
-
-                <VStack alignItems="start">
-                  <FormLabel htmlFor="firstName">Prénom</FormLabel>
-                  <Field
-                    as={Input}
-                    id="firstName"
-                    name="firstName"
-                    type="text"
-                  />
-                  <Box mb="2rem" height="1rem">
-                    {errors.firstName && touched.firstName ? (
-                      <Box fontSize="12" color="red">
-                        {errors.firstName}
-                      </Box>
-                    ) : null}
+                ) : null}
+                <FormLabel mt="1rem" htmlFor="password">
+                  Mot de passe
+                </FormLabel>
+                <Field
+                  as={Input}
+                  id="password"
+                  name="password"
+                  type="password"
+                  validate={validatePassword}
+                />
+                {errors.password && touched.password ? (
+                  <Box fontSize="12" color="red">
+                    {errors.password}
                   </Box>
-                </VStack>
-              </HStack>
+                ) : null}
 
-              <FormLabel htmlFor="username">Nom d'utilisateur</FormLabel>
-              <Field as={Input} id="username" name="username" type="text" />
-              {errors.username && touched.username ? (
-                <Box fontSize="12" color="red">
-                  {errors.username}
-                </Box>
-              ) : null}
+                <FormLabel mt="1rem" htmlFor="confirmPassword">
+                  Confirmer Mot de passe
+                </FormLabel>
+                <Field
+                  as={Input}
+                  id="confirmPassword"
+                  name="confirmPassword"
+                  type="password"
+                />
+                {errors.confirmPassword && touched.confirmPassword ? (
+                  <Box fontSize="12" color="red">
+                    {errors.confirmPassword}
+                  </Box>
+                ) : null}
 
-              <FormLabel mt="1rem" htmlFor="email">
-                Email Address
-              </FormLabel>
-              <Field
-                as={Input}
-                id="email"
-                name="email"
-                type="email"
-                validate={validateEmail}
-              />
-              {errors.email && touched.email ? (
-                <Box fontSize="12" color="red">
-                  {errors.email}
-                </Box>
-              ) : null}
-              <FormLabel mt="1rem" htmlFor="password">
-                Mot de passe
-              </FormLabel>
-              <Field
-                as={Input}
-                id="password"
-                name="password"
-                type="password"
-                validate={validatePassword}
-              />
-              {errors.password && touched.password ? (
-                <Box fontSize="12" color="red">
-                  {errors.password}
-                </Box>
-              ) : null}
+                {errors.question && touched.question ? (
+                  <Box fontSize="12" color="red">
+                    {errors.question}
+                  </Box>
+                ) : null}
 
-              <FormLabel mt="1rem" htmlFor="confirmPassword">
-                Confirmer Mot de passe
-              </FormLabel>
-              <Field
-                as={Input}
-                id="confirmPassword"
-                name="confirmPassword"
-                type="password"
-              />
-              {errors.confirmPassword && touched.confirmPassword ? (
-                <Box fontSize="12" color="red">
-                  {errors.confirmPassword}
-                </Box>
-              ) : null}
+                <FormLabel mt="1rem" htmlFor="gender">
+                  Select your gender
+                </FormLabel>
+                <Select
+                  id="gender"
+                  name="gender"
+                  placeholder="Select your gender"
+                  onChange={(e) => {
+                    setFieldValue('gender', e.target.value)
+                  }}
+                >
+                  {Object.values(Gender).map((gender) => (
+                    <option value={gender}>{gender}</option>
+                  ))}
+                </Select>
+                {errors.gender && touched.gender ? (
+                  <Box fontSize="12" color="red">
+                    {errors.gender}
+                  </Box>
+                ) : null}
+                <FormLabel mt="1rem" htmlFor="question">
+                  Security Question
+                </FormLabel>
+                <Select
+                  id="question"
+                  name="question"
+                  placeholder="Select security question"
+                  onChange={(e) => {
+                    setFieldValue('question', e.target.value)
+                  }}
+                >
+                  {Object.values(Question).map((question) => (
+                    <option value={question}>{question}</option>
+                  ))}
+                </Select>
+                <FormLabel mt="1rem" htmlFor="response">
+                  votre réponse:
+                </FormLabel>
+                <Field as={Input} id="response" name="response" type="" />
+                {errors.response && touched.response ? (
+                  <Box fontSize="12" color="red">
+                    {errors.response}
+                  </Box>
+                ) : null}
 
-              <Button
-                mt="2rem"
-                type="submit"
-                colorScheme="primary"
-                display="block"
-                fontSize="17"
-                mx="auto"
-                width="8rem"
-              >
-                Connexion
-              </Button>
-            </Form>
-          )}
+                {isLoading ? (
+                  <Box
+                    display="flex"
+                    alignItems="center"
+                    justifyContent="center"
+                  >
+                    <Spinner />
+                  </Box>
+                ) : (
+                  <Button
+                    mt="2rem"
+                    type="submit"
+                    colorScheme="primary"
+                    display="block"
+                    fontSize="17"
+                    mx="auto"
+                    width="8rem"
+                  >
+                    Connexion
+                  </Button>
+                )}
+                <CodeConfirmation
+                  email={values.email}
+                  isLoading={isLoading}
+                  isOpen={isSignUpSuccess}
+                  data={data}
+                  onClose={resetModal}
+                />
+              </Form>
+            )
+          }}
         </Formik>
       </Box>
     </Flex>

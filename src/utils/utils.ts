@@ -44,3 +44,20 @@ export function checkRtl(character: string) {
   ]
   return RTL.indexOf(character[0]) > -1
 }
+
+export enum Question {
+  FirstSchool = 'what is your FirstSchool ?',
+  BestFriendName = 'what is your best friend name ?',
+  FootballClub = 'What is your favorite football club ?',
+}
+
+export enum Gender {
+  Male = 'male',
+  Female = 'female',
+  Other = 'other',
+}
+
+export enum Role {
+  Admin = 'admin',
+  User = 'user',
+}

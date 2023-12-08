@@ -12,11 +12,15 @@ import {
 import { Field, Form, Formik } from 'formik'
 import * as Yup from 'yup'
 
-import React from 'react'
-import { Link } from 'react-router-dom'
+import React, { useEffect } from 'react'
+import { useLoginMutation } from '../slices/authSlice'
+import SecurityQuestion from '../../common/components/SecurityQuestion'
 
 const Login = () => {
   const initialValues = { email: '', password: '' }
+
+  const [loginHandler, { isLoading, data, error, isSuccess, reset }] =
+    useLoginMutation()
 
   const SignInSchema = Yup.object().shape({
     email: Yup.string().required('Address Email est requis'),
@@ -25,6 +29,7 @@ const Login = () => {
 
   function validateEmail(value: string) {
     let error
+
     if (!value) {
       error = 'Required'
     } else if (
@@ -36,6 +41,13 @@ const Login = () => {
     }
     return error
   }
+
+  console.log('data', data)
+
+  useEffect(() => {
+    if (data && data.token) {
+    }
+  }, [data])
 
   return (
     <Flex align="center" justify="center">
@@ -63,10 +75,11 @@ const Login = () => {
           }}
           validationSchema={SignInSchema}
           onSubmit={(values) => {
+            loginHandler(values)
             console.log(values)
           }}
         >
-          {({ errors, touched }) => (
+          {({ errors, touched, values }) => (
             <Form>
               <FormLabel htmlFor="email">Email Address</FormLabel>
               <Field
@@ -96,19 +109,35 @@ const Login = () => {
                   {errors.password}
                 </Box>
               ) : null}
-              <Link to="/private/home">
-                <Button
-                  mt="2rem"
-                  type="submit"
-                  colorScheme="primary"
-                  display="block"
-                  fontSize="17"
-                  mx="auto"
-                  width="8rem"
-                >
-                  Connexion
-                </Button>
-              </Link>
+
+              <Button
+                isLoading={isLoading}
+                mt="2rem"
+                type="submit"
+                colorScheme="primary"
+                display="block"
+                fontSize="17"
+                mx="auto"
+                width="8rem"
+              >
+                Connexion
+              </Button>
+
+              <SecurityQuestion
+                isOpen={isSuccess}
+                onClose={() => {}}
+                onSubmit={(response) => {
+                  loginHandler({
+                    email: values.email,
+                    password: values.password,
+                    securityQuestion: {
+                      question: data?.question,
+                      response,
+                    },
+                  })
+                }}
+                data={data?.question}
+              />
             </Form>
           )}
         </Formik>

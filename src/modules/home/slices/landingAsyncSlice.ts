@@ -1,6 +1,6 @@
 import { globalApi } from '../../../app/globalAsync'
 
-export const landingAsyncSlice = globalApi.injectEndpoints({
+export const landingAsyncSlice = globalApi?.injectEndpoints({
   endpoints: (build) => ({
     getNews: build.query<any[], any>({
       query: () => ({
