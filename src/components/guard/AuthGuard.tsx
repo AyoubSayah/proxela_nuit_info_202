@@ -12,6 +12,8 @@ const AuthGuard = () => {
   useLayoutEffect(() => {
     if (pathname.includes('private') && !token) {
       navigate('/')
+    } else if (token) {
+      navigate('/private/home')
     }
   }, [pathname, token])
   return <></>
