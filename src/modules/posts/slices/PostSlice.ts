@@ -5,8 +5,9 @@ export const PostSlice = globalApi.injectEndpoints({
     getPost: build.query<any[], any>({
       query: () => ({
         url: 'post',
+        method: 'GET',
       }),
-      providesTags: ['NEWPOST'],
+      providesTags: ['POSTS'],
     }),
     addNewPost: build.mutation({
       query: (data) => ({
@@ -14,7 +15,7 @@ export const PostSlice = globalApi.injectEndpoints({
         method: 'POST',
         body: data,
       }),
-      invalidatesTags: ['NEWPOST'],
+      invalidatesTags: ['POSTS'],
     }),
     addImage: build.mutation({
       query: (data) => ({
@@ -50,6 +51,14 @@ export const PostSlice = globalApi.injectEndpoints({
         url: 'reaction/' + data,
       }),
     }),
+    votePost: build.mutation({
+      query: (data) => ({
+        url: 'post/reaction',
+        method: 'POST',
+        body: data,
+      }),
+      invalidatesTags: ['POSTS'],
+    }),
   }),
 })
 export const {
@@ -60,4 +69,5 @@ export const {
   useLazyGetCommentsQuery,
   useAddCommentMutation,
   useGetLikesQuery,
+  useVotePostMutation,
 } = PostSlice

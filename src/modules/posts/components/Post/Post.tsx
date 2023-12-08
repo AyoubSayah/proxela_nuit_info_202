@@ -12,18 +12,24 @@ import {
   InputLeftElement,
   InputRightElement,
   Skeleton,
+  Spinner,
   Text,
   VStack,
 } from '@chakra-ui/react'
 import React, { FC, useEffect, useState } from 'react'
-import { AiOutlineComment, AiOutlineSend } from 'react-icons/ai'
+import {
+  AiOutlineComment,
+  AiOutlineSend,
+  AiTwotoneLike,
+  AiTwotoneDislike,
+} from 'react-icons/ai'
 import { useIfInView } from '../../../../utils/hooks/isInView'
 import { checkRtl } from '../../../../utils/utils'
 import {
   useLazyGetImageQuery,
   useLazyGetImageProfileQuery,
 } from '../../../home/slices/landingAsyncSlice'
-import { useGetPostQuery } from '../../slices/PostSlice'
+import { useGetPostQuery, useVotePostMutation } from '../../slices/PostSlice'
 import CommentList from './CommentList'
 import Like from './Like'
 import ListOfLikes from './ListOfLikes'
@@ -33,7 +39,7 @@ interface PostProps {
 const Post: FC<PostProps> = ({ post }) => {
   const [show, setShow] = React.useState(false)
   const [contentHeight, setContentHeight] = React.useState(false)
-
+  const [votePost, { isLoading, isSuccess }] = useVotePostMutation()
   const refDiv = React.useRef<any>()
   const refImage = React.useRef<any>()
   const [showComment, setShowComment] = React.useState(false)
@@ -70,11 +76,28 @@ const Post: FC<PostProps> = ({ post }) => {
     }
   }, [])
 
+  const votePostHandler = (postId, status) => {
+    votePost({
+      postId,
+      status,
+    })
+      .unwrap()
+      .then((data) => {
+        console.log('postId', data)
+      })
+  }
+
   return (
     <Box
       boxShadow="rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;"
       p="1rem"
-      background="white"
+      background={
+        post.upvote === post.downVote
+          ? 'yellow.100'
+          : post.upvote > post.downVote
+          ? 'green.100'
+          : 'red.100'
+      }
       w="36rem"
       maxW="100%"
       rounded="lg"
@@ -84,12 +107,12 @@ const Post: FC<PostProps> = ({ post }) => {
       <Flex alignItems="center" gap=".5rem" mb="1rem">
         {' '}
         <Avatar
-          name={post.userName}
-          src={errorProfile ? post?.userName : profileImage}
+          name={post.user?.firstName}
+          src={errorProfile ? post.user?.firstName : profileImage}
         />
         <Flex flexDir="column">
           <Text fontWeight="bold" my="0">
-            {post.userName}
+            {post.user?.firstName + ' ' + post.user?.firstName}
           </Text>
           <Text fontSize="sm" my="0">
             2 December 2022
@@ -134,16 +157,7 @@ const Post: FC<PostProps> = ({ post }) => {
           </Box>
         </Skeleton>
       )}
-      <ListOfLikes postId={post?._id} />
-      <Flex mt="1rem">
-        <Like postId={post?._id} />
-        <Divider
-          orientation="vertical"
-          ml="auto"
-          borderWidth="2px"
-          height="2.5rem"
-          size="20px"
-        />
+      <Flex mt="1rem" gap={5}>
         <Center
           p=".5rem"
           flexBasis="50%"
@@ -154,27 +168,43 @@ const Post: FC<PostProps> = ({ post }) => {
           cursor="pointer"
           color="gray.500"
           gap=".4rem"
-          onClick={handleTogleComment}
+          onClick={() => {
+            votePostHandler(post._id, 'up')
+          }}
         >
-          <Icon as={AiOutlineComment} w="1.5rem" h="1.5rem" />{' '}
-          <Text fontWeight="semibold">Comment</Text>
+          <Icon as={AiTwotoneLike} w="1.5rem" h="1.5rem" color={'green.300'} />{' '}
+          <Text fontWeight="semibold" color={'green.300'}>
+            UP VOTE
+          </Text>
+          <Text fontWeight={'bold'} fontSize={30} color={'green.500'}>
+            {post.upvote}
+          </Text>
+        </Center>
+        {isLoading && <Spinner />}
+        <Center
+          p=".5rem"
+          flexBasis="50%"
+          bg="gray.100"
+          borderRightRadius="lg"
+          _hover={{ background: 'gray.200' }}
+          transition="all .3s"
+          cursor="pointer"
+          color="gray.500"
+          gap=".4rem"
+          onClick={() => {
+            votePostHandler(post._id, 'down')
+          }}
+        >
+          <Icon as={AiTwotoneDislike} w="1.5rem" h="1.5rem" color={'red'} />
+
+          <Text fontWeight="semibold" color={'red'}>
+            DOWN VOTE
+          </Text>
+          <Text fontWeight={'bold'} fontSize={30} color={'red.500'}>
+            {post.downVote}
+          </Text>
         </Center>
       </Flex>
-      <Collapse in={showComment}>
-        <Flex alignItems="center" mt="1rem" gap=".5rem">
-          <InputGroup mx=".2rem">
-            <InputLeftElement>
-              <Avatar name="ayoub sayah" size="sm" />{' '}
-            </InputLeftElement>
-            <Input placeholder="write your comment" rounded="full" />
-
-            <InputRightElement display="flex" alignItems="center">
-              <Icon as={AiOutlineSend} cursor="pointer" m="auto" mt=".7rem" />
-            </InputRightElement>
-          </InputGroup>
-        </Flex>
-        <CommentList />
-      </Collapse>
     </Box>
   )
 }
