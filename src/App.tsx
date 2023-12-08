@@ -8,6 +8,7 @@ import ErrorModal from './components/modals/ModalError'
 import LAYOUT_ROUTE from './layout/routes/routes'
 import { AUTH_ROUTES } from './modules/auth/routes/routes'
 import Loader from './components/Loader/Loader'
+import AuthGuard from './components/guard/AuthGuard'
 
 function App() {
   const routes = useRoutes([...AUTH_ROUTES, ...LAYOUT_ROUTE])
@@ -15,7 +16,7 @@ function App() {
   return (
     <div className="App">
       <Suspense fallback={<Loader />}>{routes}</Suspense>
-
+      <AuthGuard />
       <InfoModal />
       <SuccessModal />
       <ErrorModal />

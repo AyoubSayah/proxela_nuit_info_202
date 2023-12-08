@@ -12,13 +12,14 @@ import {
 import { Field, Form, Formik } from 'formik'
 import * as Yup from 'yup'
 
-import React, { useEffect } from 'react'
+import React, { useEffect, useLayoutEffect } from 'react'
 import { useLoginMutation } from '../slices/authSlice'
 import SecurityQuestion from '../../common/components/SecurityQuestion'
+import { useNavigate } from 'react-router-dom'
 
 const Login = () => {
   const initialValues = { email: '', password: '' }
-
+  const navigate = useNavigate()
   const [loginHandler, { isLoading, data, error, isSuccess, reset }] =
     useLoginMutation()
 
@@ -42,12 +43,12 @@ const Login = () => {
     return error
   }
 
-  console.log('data', data)
-
-  useEffect(() => {
-    if (data && data.token) {
+  useLayoutEffect(() => {
+    if (isSuccess && data && data.token) {
+      reset()
+      navigate('/private/home')
     }
-  }, [data])
+  }, [data, isSuccess])
 
   return (
     <Flex align="center" justify="center">

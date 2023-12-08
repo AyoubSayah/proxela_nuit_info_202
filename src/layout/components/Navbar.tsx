@@ -22,8 +22,8 @@ import { Link, NavLink } from 'react-router-dom'
 
 import Logo from '../../components/logo/Logo'
 import bottomNavbarImage from '../../assets/landing/navbar.png'
-import { useSelector } from 'react-redux'
-import { selectToken } from '../../modules/auth/slices/authSlice'
+import { useDispatch, useSelector } from 'react-redux'
+import { authSlice, selectToken } from '../../modules/auth/slices/authSlice'
 import LogoSIS from '../../components/logo/LogoSIS'
 type NavbarProps = {
   toggleSideBar?: () => void
@@ -37,7 +37,7 @@ const Navbar: FunctionComponent<NavbarProps> = ({
   const { t, i18n } = useTranslation()
   const [isSticky, setIsSticky] = useState(false)
   const token = useSelector(selectToken)
-
+  const dispatch = useDispatch()
   const handleLanguageChange = (e: any) => {
     void i18n.changeLanguage(e.target.value)
   }
@@ -185,7 +185,12 @@ const Navbar: FunctionComponent<NavbarProps> = ({
                 <MenuItem>
                   <Icon as={AiOutlineUser} mr=".5rem" /> Profile
                 </MenuItem>
-                <MenuItem>
+                <MenuItem
+                  onClick={() => {
+                    console.log('clicked')
+                    dispatch(authSlice.actions.signOut())
+                  }}
+                >
                   <Icon as={AiOutlineLogout} mr=".5rem" /> Sign Out
                 </MenuItem>
               </MenuList>
