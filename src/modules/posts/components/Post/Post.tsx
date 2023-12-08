@@ -163,7 +163,7 @@ const Post: FC<PostProps> = ({ post }) => {
           flexBasis="50%"
           bg="gray.100"
           borderRightRadius="lg"
-          _hover={{ background: 'gray.200' }}
+          _hover={{ background: 'white' }}
           transition="all .3s"
           cursor="pointer"
           color="gray.500"
@@ -186,7 +186,7 @@ const Post: FC<PostProps> = ({ post }) => {
           flexBasis="50%"
           bg="gray.100"
           borderRightRadius="lg"
-          _hover={{ background: 'gray.200' }}
+          _hover={{ background: 'white' }}
           transition="all .3s"
           cursor="pointer"
           color="gray.500"
