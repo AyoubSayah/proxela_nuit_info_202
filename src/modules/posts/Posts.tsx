@@ -183,9 +183,11 @@ const Posts = () => {
         mx="auto"
       >
         <NewPost />
-        {data?.posts?.length > 0
-          ? data.posts?.map((post) => <Post key={post._id} post={post} />)
-          : ListOfPosts.map((post) => <Post key={post.id} post={post} />)}
+        {data?.posts?.length > 0 ? (
+          data.posts?.map((post) => <Post key={post._id} post={post} />)
+        ) : (
+          <Text>No post for today ^^</Text>
+        )}
       </Center>
     </Flex>
   )
